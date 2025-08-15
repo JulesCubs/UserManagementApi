@@ -67,3 +67,47 @@ El proyecto utiliza una base de datos inmemoria en lugar de una base de datos pe
 Se ha implementado un sistema de almacenamiento temporal (tempStorage) para facilitar las pruebas.
 Los métodos están diseñados para ser asíncronos, lo que permite una mejor escalabilidad.
 Este proyecto proporciona una base sólida para entender cómo funciona una API RESTful simple en ASP.NET Core, y puede servir como punto de partida para proyectos más complejos.
+
+Para el manejo de errores se pide la optimización del código en base a la siguiente instrucción:
+Al programa ya existente por favor ayudame añadiendo validaciones para: 
+- los campos de entrada del usuario cuando sus tipos no corresponden o hay campos vacios.
+- Implementar trycatch para manejo de excepciones no controladas
+- optimizar las consultas o la logica para mejorar el rendimiento
+
+Resultado:
+Documentación del Proceso de Optimización y Mejoras
+1. Validación de Campos de Entrada
+Motivación:
+Evitar que se ingresen datos inválidos o incompletos, lo que podría causar errores en tiempo de ejecución o inconsistencias en los datos.
+
+Implementación:
+
+Se creó el método ValidarUsuario, que verifica:
+Que el objeto usuario no sea nulo.
+Que el Id sea positivo (cuando corresponde).
+Que los campos Nombre y Email no estén vacíos ni sean solo espacios.
+Que el email tenga un formato básico válido (contenga @ y tenga longitud mínima).
+Este método se invoca en los endpoints de creación y actualización de usuarios antes de procesar la solicitud.
+2. Manejo de Excepciones
+Motivación:
+Prevenir que errores inesperados detengan la ejecución de la API y proporcionar mensajes de error claros al cliente.
+
+Implementación:
+
+Se envolvió la lógica de cada endpoint en bloques try-catch.
+En caso de excepción, se retorna una respuesta HTTP adecuada (BadRequest o Problem) con el mensaje de error.
+Esto asegura que cualquier error no controlado sea capturado y comunicado correctamente.
+3. Optimización de Consultas y Lógica
+Motivación:
+Mejorar el rendimiento y la eficiencia de la API, especialmente en operaciones de búsqueda y actualización.
+
+Implementación:
+
+Se reemplazó la lista de usuarios (List<Usuario>) por un diccionario (Dictionary<int, Usuario>), permitiendo búsquedas, inserciones y eliminaciones en tiempo constante O(1) por clave.
+Las operaciones de obtención, actualización y eliminación de usuarios ahora utilizan el diccionario para acceder directamente por ID, evitando búsquedas lineales.
+En la obtención de múltiples usuarios por IDs, se filtran y seleccionan solo los usuarios existentes en el diccionario, optimizando la consulta.
+4. Resumen de Cambios
+Validaciones estrictas en la entrada de datos.
+Manejo robusto de errores con try-catch en todos los endpoints.
+Uso de estructuras de datos eficientes (Dictionary<int, Usuario>) para mejorar el rendimiento.
+Respuestas HTTP claras y adecuadas según el resultado de cada operación.
