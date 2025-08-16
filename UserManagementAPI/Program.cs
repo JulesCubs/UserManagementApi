@@ -22,6 +22,12 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         var app = builder.Build();
 
+        // Middleware de manejo global de errores (debe ir primero)
+        app.UseMiddleware<ErrorHandlerMiddleware>();
+
+        // Usar el middleware de auditoría
+        app.UseMiddleware<AuditoriaMiddleware>();
+
         app.MapGet("/users", GetUsers);
         app.MapGet("/users/{id}", GetUserById);
         app.MapPost("/users/", AddUser);
