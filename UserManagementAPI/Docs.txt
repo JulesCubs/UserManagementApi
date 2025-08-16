@@ -1,20 +1,20 @@
-Descripción del Proyecto
-Este proyecto es una API RESTful sencilla creada utilizando ASP.NET Core. La API permite realizar operaciones básicas sobre una colección de usuarios.
+Project Description
+This project is a simple RESTful API built using ASP.NET Core. The API allows basic operations on a collection of users.
 
-Estructura del Código
-El proyecto consta principalmente de un archivo Program.cs, que contiene toda la lógica principal de la API.
+Code Structure
+The project mainly consists of a Program.cs file, which contains all the main logic of the API.
 
-Clase Usuario
+User Class
 public class Usuario
 {
     public int Id { get; set; }
     public string Nombre { get; set; }
     public string Email { get; set; }
 }
-Esta clase define la estructura de cada usuario en el sistema.
+This class defines the structure of each user in the system.
 
-Clase Program
-La clase Program es donde se encuentra la lógica principal de la API:
+Program Class
+The Program class contains the main logic of the API:
 
 public class Program
 {
@@ -23,132 +23,132 @@ public class Program
 
     public static async Task<IResult> GetUsers(HttpRequest request)
     {
-        // Lógica para obtener usuarios
+        // Logic to get users
     }
 
     public static async Task<IResult> GetUserById(int id)
     {
-        // Lógica para obtener un usuario por ID
+        // Logic to get a user by ID
     }
 
     public static async Task<IResult> AddUser(Usuario usuario)
     {
-        // Lógica para agregar un nuevo usuario
+        // Logic to add a new user
     }
 
     public static async Task<IResult> UpdateUser(int id, Usuario usuarioActualizado)
     {
-        // Lógica para actualizar un usuario existente
+        // Logic to update an existing user
     }
 
     public static async Task<IResult> DeleteUser(int id)
     {
-        // Lógica para eliminar un usuario
+        // Logic to delete a user
     }
 
     public static void Main(string[] args)
     {
-        // Configuración inicial de la aplicación
+        // Initial application setup
     }
 }
-Funcionalidades de la API
-Obtener todos los usuarios (GET /users)
-Obtener un usuario por ID (GET /users/{id})
-Agregar un nuevo usuario (POST /users)
-Actualizar un usuario existente (PUT /users/{id})
-Eliminar un usuario (DELETE /users/{id})
-Características Notables
-Uso de WebApplication para crear la aplicación web.
-Implementación de métodos HTTP para cada operación CRUD.
-Uso de Results para manejar respuestas HTTP.
-Almacenamiento temporal de usuarios en tempStorage para pruebas.
-Consideraciones Adicionales
-El proyecto utiliza una base de datos inmemoria en lugar de una base de datos persistente real.
-Se ha implementado un sistema de almacenamiento temporal (tempStorage) para facilitar las pruebas.
-Los métodos están diseñados para ser asíncronos, lo que permite una mejor escalabilidad.
-Este proyecto proporciona una base sólida para entender cómo funciona una API RESTful simple en ASP.NET Core, y puede servir como punto de partida para proyectos más complejos.
+API Features
+Get all users (GET /users)
+Get a user by ID (GET /users/{id})
+Add a new user (POST /users)
+Update an existing user (PUT /users/{id})
+Delete a user (DELETE /users/{id})
+Notable Features
+Use of WebApplication to create the web app.
+Implementation of HTTP methods for each CRUD operation.
+Use of Results to handle HTTP responses.
+Temporary user storage in tempStorage for testing.
+Additional Considerations
+The project uses an in-memory database instead of a real persistent database.
+A temporary storage system (tempStorage) has been implemented to facilitate testing.
+The methods are designed to be asynchronous, allowing for better scalability.
+This project provides a solid foundation for understanding how a simple RESTful API works in ASP.NET Core and can serve as a starting point for more complex projects.
 
-Para el manejo de errores se pide la optimización del código en base a la siguiente instrucción:
-Al programa ya existente por favor ayudame añadiendo validaciones para: 
-- los campos de entrada del usuario cuando sus tipos no corresponden o hay campos vacios.
-- Implementar trycatch para manejo de excepciones no controladas
-- optimizar las consultas o la logica para mejorar el rendimiento
+For error handling, code optimization was requested based on the following instructions:
+Please help by adding validations to the existing program for: 
+- user input fields when their types do not match or fields are empty.
+- Implement try-catch for handling unhandled exceptions.
+- Optimize queries or logic to improve performance.
 
-Resultado:
-Documentación del Proceso de Optimización y Mejoras
-1. Validación de Campos de Entrada
-Motivación:
-Evitar que se ingresen datos inválidos o incompletos, lo que podría causar errores en tiempo de ejecución o inconsistencias en los datos.
+Result:
+Documentation of the Optimization and Improvement Process
+1. Input Field Validation
+Motivation:
+Prevent invalid or incomplete data from being entered, which could cause runtime errors or data inconsistencies.
 
-Implementación:
+Implementation:
 
-Se creó el método ValidarUsuario, que verifica:
-Que el objeto usuario no sea nulo.
-Que el Id sea positivo (cuando corresponde).
-Que los campos Nombre y Email no estén vacíos ni sean solo espacios.
-Que el email tenga un formato básico válido (contenga @ y tenga longitud mínima).
-Este método se invoca en los endpoints de creación y actualización de usuarios antes de procesar la solicitud.
-2. Manejo de Excepciones
-Motivación:
-Prevenir que errores inesperados detengan la ejecución de la API y proporcionar mensajes de error claros al cliente.
+The ValidarUsuario method was created, which checks:
+That the user object is not null.
+That the Id is positive (when applicable).
+That the Name and Email fields are not empty or just spaces.
+That the email has a basic valid format (contains @ and has a minimum length).
+This method is called in the user creation and update endpoints before processing the request.
+2. Exception Handling
+Motivation:
+Prevent unexpected errors from stopping the API execution and provide clear error messages to the client.
 
-Implementación:
+Implementation:
 
-Se envolvió la lógica de cada endpoint en bloques try-catch.
-En caso de excepción, se retorna una respuesta HTTP adecuada (BadRequest o Problem) con el mensaje de error.
-Esto asegura que cualquier error no controlado sea capturado y comunicado correctamente.
-3. Optimización de Consultas y Lógica
-Motivación:
-Mejorar el rendimiento y la eficiencia de la API, especialmente en operaciones de búsqueda y actualización.
+The logic of each endpoint was wrapped in try-catch blocks.
+In case of an exception, an appropriate HTTP response (BadRequest or Problem) is returned with the error message.
+This ensures that any unhandled error is captured and properly communicated.
+3. Query and Logic Optimization
+Motivation:
+Improve the performance and efficiency of the API, especially in search and update operations.
 
-Implementación:
+Implementation:
 
-Se reemplazó la lista de usuarios (List<Usuario>) por un diccionario (Dictionary<int, Usuario>), permitiendo búsquedas, inserciones y eliminaciones en tiempo constante O(1) por clave.
-Las operaciones de obtención, actualización y eliminación de usuarios ahora utilizan el diccionario para acceder directamente por ID, evitando búsquedas lineales.
-En la obtención de múltiples usuarios por IDs, se filtran y seleccionan solo los usuarios existentes en el diccionario, optimizando la consulta.
-4. Resumen de Cambios
-Validaciones estrictas en la entrada de datos.
-Manejo robusto de errores con try-catch en todos los endpoints.
-Uso de estructuras de datos eficientes (Dictionary<int, Usuario>) para mejorar el rendimiento.
-Respuestas HTTP claras y adecuadas según el resultado de cada operación.
+The list of users (List<Usuario>) was replaced by a dictionary (Dictionary<int, Usuario>), allowing searches, insertions, and deletions in constant time O(1) by key.
+The operations to get, update, and delete users now use the dictionary to access directly by ID, avoiding linear searches.
+When obtaining multiple users by IDs, only existing users in the dictionary are filtered and selected, optimizing the query.
+4. Summary of Changes
+Strict validations on input data.
+Robust error handling with try-catch in all endpoints.
+Use of efficient data structures (Dictionary<int, Usuario>) to improve performance.
+Clear and appropriate HTTP responses according to the result of each operation.
 
-Para la creación de los middleware restantes copilot tuvo en cuenta las siguientes instrucciones
--  En base al codigo generado, implementar middlewareque registre los metodos consultados, la ruta de las solicitudes consultadas y el codigo de estado de respuesta devuelto, todo esto para fines de auditoria.
--  Tambien genera otro middleware para el manejo de errorera donde captura las excepciones no controladas y devuelve respuesta de error en formato json por ejemplo { "error": "Error interno del servidor." }
--  Y agregar un middleware de autenticación donde valide los tokens de solicitudes entrantes, permita el acceso solo a usaurios con tokens validos y devuelva 401 no autorizado para tokens no validos.
+For the creation of the remaining middleware, Copilot considered the following instructions:
+-  Based on the generated code, implement middleware that logs the consulted methods, the path of the requested routes, and the returned response status code, all for auditing purposes.
+-  Also generate another middleware for error handling where it captures unhandled exceptions and returns an error response in JSON format, for example { "error": "Internal server error." }
+-  And add an authentication middleware that validates the tokens of incoming requests, allows access only to users with valid tokens, and returns 401 unauthorized for invalid tokens.
 
-Los comentarios ofrecidas por copilot fueron: 
-Documentación del Proceso de Creación de Middleware
-1. Middleware de Auditoría
-Motivación:
-Registrar información relevante de cada solicitud para fines de auditoría y trazabilidad, como el método HTTP, la ruta consultada y el código de estado de la respuesta.
+Copilot's comments were: 
+Documentation of the Middleware Creation Process
+1. Auditing Middleware
+Motivation:
+Log relevant information from each request for auditing and traceability purposes, such as the HTTP method, the requested path, and the response status code.
 
-Implementación:
+Implementation:
 
-Se creó la clase AuditoriaMiddleware.
-Este middleware intercepta cada solicitud, captura el método (GET, POST, etc.), la ruta (/users, /users/{id}) y, tras ejecutar el siguiente middleware o endpoint, obtiene el código de estado de la respuesta.
-Utiliza el sistema de logging de ASP.NET Core (ILogger) para registrar esta información.
-El middleware se registra en el pipeline de la aplicación antes de los endpoints, para asegurar que todas las solicitudes sean auditadas.
-Ejemplo de registro:
+The AuditoriaMiddleware class was created.
+This middleware intercepts each request, captures the method (GET, POST, etc.), the path (/users, /users/{id}), and after executing the next middleware or endpoint, obtains the response status code.
+It uses ASP.NET Core's logging system (ILogger) to record this information.
+The middleware is registered in the application's pipeline before the endpoints to ensure that all requests are audited.
+Example log:
 
-2. Middleware de Manejo Global de Errores
-Motivación:
-Capturar todas las excepciones no controladas que puedan ocurrir durante el procesamiento de una solicitud y devolver una respuesta uniforme y amigable al cliente.
+2. Global Error Handling Middleware
+Motivation:
+Capture all unhandled exceptions that may occur during the processing of a request and return a uniform and user-friendly response to the client.
 
-Implementación:
+Implementation:
 
-Se creó la clase ErrorHandlerMiddleware.
-Este middleware envuelve la ejecución de los siguientes componentes en un bloque try-catch.
-Si ocurre una excepción, registra el error y responde con un código HTTP 500 (Internal Server Error) y un mensaje JSON estándar:
-Se recomienda colocar este middleware al inicio del pipeline para que capture cualquier excepción de los middleware o endpoints posteriores.
-3. Middleware de Autenticación
-Motivación:
-Proteger los recursos de la API permitiendo el acceso solo a solicitudes autenticadas mediante un token válido.
+The ErrorHandlerMiddleware class was created.
+This middleware wraps the execution of the following components in a try-catch block.
+If an exception occurs, it logs the error and responds with an HTTP 500 (Internal Server Error) code and a standard JSON message:
+It is recommended to place this middleware at the beginning of the pipeline to capture any exception from subsequent middleware or endpoints.
+3. Authentication Middleware
+Motivation:
+Protect API resources by allowing access only to requests authenticated with a valid token.
 
-Implementación:
+Implementation:
 
-Se creó la clase AuthMiddleware.
-Este middleware verifica la presencia y validez del encabezado Authorization en cada solicitud.
-Si el token es válido (por ejemplo, "Bearer mi_token_secreto"), permite el acceso al siguiente middleware o endpoint.
-Si el token es inválido o no está presente, responde con un código HTTP 401 (Unauthorized) y un mensaje JSON:
-Este middleware debe ir después del de errores y antes de los endpoints para asegurar la protección de todos los recursos.
+The AuthMiddleware class was created.
+This middleware checks for the presence and validity of the Authorization header in each request.
+If the token is valid (for example, "Bearer mi_token_secreto"), it allows access to the next middleware or endpoint.
+If the token is invalid or missing, it responds with an HTTP 401 (Unauthorized) code and a JSON message:
+This middleware should go after the error handler and before the endpoints to ensure the protection of all resources.
