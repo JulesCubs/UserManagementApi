@@ -25,6 +25,9 @@ public class Program
         // Middleware de manejo global de errores (debe ir primero)
         app.UseMiddleware<ErrorHandlerMiddleware>();
 
+        // Middleware de autenticación (debe ir antes de auditoría y endpoints)
+        app.UseMiddleware<AuthMiddleware>();
+
         // Usar el middleware de auditoría
         app.UseMiddleware<AuditoriaMiddleware>();
 

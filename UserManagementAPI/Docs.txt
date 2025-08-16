@@ -111,3 +111,44 @@ Validaciones estrictas en la entrada de datos.
 Manejo robusto de errores con try-catch en todos los endpoints.
 Uso de estructuras de datos eficientes (Dictionary<int, Usuario>) para mejorar el rendimiento.
 Respuestas HTTP claras y adecuadas según el resultado de cada operación.
+
+Para la creación de los middleware restantes copilot tuvo en cuenta las siguientes instrucciones
+-  En base al codigo generado, implementar middlewareque registre los metodos consultados, la ruta de las solicitudes consultadas y el codigo de estado de respuesta devuelto, todo esto para fines de auditoria.
+-  Tambien genera otro middleware para el manejo de errorera donde captura las excepciones no controladas y devuelve respuesta de error en formato json por ejemplo { "error": "Error interno del servidor." }
+-  Y agregar un middleware de autenticación donde valide los tokens de solicitudes entrantes, permita el acceso solo a usaurios con tokens validos y devuelva 401 no autorizado para tokens no validos.
+
+Los comentarios ofrecidas por copilot fueron: 
+Documentación del Proceso de Creación de Middleware
+1. Middleware de Auditoría
+Motivación:
+Registrar información relevante de cada solicitud para fines de auditoría y trazabilidad, como el método HTTP, la ruta consultada y el código de estado de la respuesta.
+
+Implementación:
+
+Se creó la clase AuditoriaMiddleware.
+Este middleware intercepta cada solicitud, captura el método (GET, POST, etc.), la ruta (/users, /users/{id}) y, tras ejecutar el siguiente middleware o endpoint, obtiene el código de estado de la respuesta.
+Utiliza el sistema de logging de ASP.NET Core (ILogger) para registrar esta información.
+El middleware se registra en el pipeline de la aplicación antes de los endpoints, para asegurar que todas las solicitudes sean auditadas.
+Ejemplo de registro:
+
+2. Middleware de Manejo Global de Errores
+Motivación:
+Capturar todas las excepciones no controladas que puedan ocurrir durante el procesamiento de una solicitud y devolver una respuesta uniforme y amigable al cliente.
+
+Implementación:
+
+Se creó la clase ErrorHandlerMiddleware.
+Este middleware envuelve la ejecución de los siguientes componentes en un bloque try-catch.
+Si ocurre una excepción, registra el error y responde con un código HTTP 500 (Internal Server Error) y un mensaje JSON estándar:
+Se recomienda colocar este middleware al inicio del pipeline para que capture cualquier excepción de los middleware o endpoints posteriores.
+3. Middleware de Autenticación
+Motivación:
+Proteger los recursos de la API permitiendo el acceso solo a solicitudes autenticadas mediante un token válido.
+
+Implementación:
+
+Se creó la clase AuthMiddleware.
+Este middleware verifica la presencia y validez del encabezado Authorization en cada solicitud.
+Si el token es válido (por ejemplo, "Bearer mi_token_secreto"), permite el acceso al siguiente middleware o endpoint.
+Si el token es inválido o no está presente, responde con un código HTTP 401 (Unauthorized) y un mensaje JSON:
+Este middleware debe ir después del de errores y antes de los endpoints para asegurar la protección de todos los recursos.
